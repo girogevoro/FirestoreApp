@@ -9,3 +9,5 @@ const val MAX_PRESSURE2 = 90
 
 const val FIRESTORE_DB_NAME = "NotesDatabase"
 const val NO_ID = ""
+
+const val LOG_TAG = "TAG"

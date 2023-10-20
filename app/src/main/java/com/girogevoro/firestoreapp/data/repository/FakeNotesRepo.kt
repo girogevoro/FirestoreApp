@@ -1,13 +1,15 @@
-package com.girogevoro.firestoreapp.domain.entity
+package com.girogevoro.firestoreapp.data.repository
 
 import com.girogevoro.firestoreapp.domain.NotesRepo
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
+import com.girogevoro.firestoreapp.domain.entity.Note
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 
 class FakeNotesRepo : NotesRepo {
+    private val sharedNotes = MutableSharedFlow<List<Note>>(1)
     private val notes = mutableListOf<Note>(
         Note(
             dateTime = LocalDateTime.of(LocalDate.of(2023, 9, 1), LocalTime.of(8, 15)),
@@ -27,16 +29,22 @@ class FakeNotesRepo : NotesRepo {
         )
     )
 
-    override fun getAllNotes(): Flow<List<Note>> {
-        return flowOf(notes)
+    init {
+        sharedNotes.tryEmit(notes)
+    }
+
+    override fun getAllNotes(): SharedFlow<List<Note>> {
+        return sharedNotes
     }
 
     override fun saveNote(note: Note) {
         notes.add(note)
+        sharedNotes.tryEmit(notes)
     }
 
     override fun deleteNote(note: Note) {
         notes.remove(note)
+        sharedNotes.tryEmit(notes)
     }
 
 }
