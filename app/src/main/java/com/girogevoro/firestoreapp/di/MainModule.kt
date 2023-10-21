@@ -1,6 +1,7 @@
 package com.girogevoro.firestoreapp.di
 
 import com.girogevoro.firestoreapp.data.repository.FakeNotesRepo
+import com.girogevoro.firestoreapp.data.repository.FirestoreNotesRepo
 import com.girogevoro.firestoreapp.domain.NotesInteractor
 import com.girogevoro.firestoreapp.domain.NotesRepo
 import com.girogevoro.firestoreapp.ui.MainActivity
@@ -15,7 +16,7 @@ class MainModule {
 
     @Provides
     @Singleton
-    fun notesRepo(): NotesRepo = FakeNotesRepo()
+    fun notesRepo(): NotesRepo = FirestoreNotesRepo()
 
 
     @Provides
